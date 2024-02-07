@@ -1,38 +1,36 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Task } from '../../models/task.model';
-import { TaskComponent } from '../task/task.component';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ArchiveTask, PinTask, TasksState } from 'src/app/state/task.state';
+import { PureTaskListComponent } from '../pure-task-list/pure-task-list.component';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskComponent],
+  imports: [CommonModule, PureTaskListComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
-  @Input() set tasks(arr: Task[]) {
-    const initialTasks = [
-      ...arr.filter(t => t.state === 'TASK_PINNED'),
-      ...arr.filter(t => t.state !== 'TASK_PINNED'),
-    ];
-    const filteredTasks = initialTasks.filter(t => t.state === 'TASK_INBOX' || t.state === 'TASK_PINNED');
-    this.tasksInOrder = filteredTasks.filter(t => t.state === 'TASK_INBOX' || t.state === 'TASK_PINNED');
+  tasks$?: Observable<any>;
+
+  constructor(private store: Store) {
+    this.tasks$ = store.select((state) => state.taskbox.tasks);
   }
 
-  /** Checks if it's in loading state */
-  @Input() loading = false;
-
-  /** Event to change the task to pinned */
-  @Output() onPinTask = new EventEmitter<Event>();
-
-  /** Event to change the task to archived */
-  @Output() onArchiveTask = new EventEmitter<Event>();
+  /**
+   * Component method to trigger the archiveTask event
+   */
+  archiveTask(id: string) {
+    this.store.dispatch(new ArchiveTask(id));
+  }
 
   /**
-* @ignore
-* Component property to define ordering of tasks
-*/
-  tasksInOrder: Task[] = [];
-
+   * Component method to trigger the pinTask event
+   */
+  pinTask(id: string) {
+    this.store.dispatch(new PinTask(id));
+  }
 }
