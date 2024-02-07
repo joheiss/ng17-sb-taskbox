@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Task } from '../../models/task.model';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { ArchiveTask, PinTask, TasksState } from 'src/app/state/task.state';
+import { ArchiveTask, PinTask } from 'src/app/state/task.state';
 import { PureTaskListComponent } from '../pure-task-list/pure-task-list.component';
 import { Store } from '@ngxs/store';
 
