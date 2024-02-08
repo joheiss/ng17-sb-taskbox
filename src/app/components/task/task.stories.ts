@@ -53,3 +53,21 @@ export const Archived: Story = {
     },
   },
 };
+
+export const LongTitle: Story = {
+  args: {
+    task: {
+      ...Basic.args?.task,
+      title: `
+      This is going to be a very long text that will eventually be truncated on the screen. This is preferable behavior and makes a slim foot. Doesn't it? This is going to be a very long text that will eventually be truncated on the screen. This is preferable behavior and makes a slim foot. Doesn't it?
+      `,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A long text should be truncated and marked with an elipsis.',
+      },
+    },
+  },
+};
